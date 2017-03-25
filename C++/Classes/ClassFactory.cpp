@@ -18,6 +18,10 @@
 #define MAGE
 #include "Mage.h"
 #endif
+#ifndef PALADIN
+#define PALADIN
+#include "Paladin.h"
+#endif
 #ifndef PRIEST
 #define PRIEST
 #include "Priest.h"
@@ -45,6 +49,10 @@ Class* ClassFactory::produceHero(std::string hero_type)
 	else if(hero_type == "mage")
 	{
 		return new Mage;
+	}
+	else if(hero_type == "paladin")
+	{
+		return new Paladin;
 	}
 	else if(hero_type == "priest")
 	{

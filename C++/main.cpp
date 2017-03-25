@@ -21,6 +21,10 @@
 #define MAGE
 #include "Classes/Mage.h"
 #endif
+#ifndef PALADIN
+#define PALADIN
+#include "Classes/Paladin.h"
+#endif
 #ifndef PRIEST
 #define PRIEST
 #include "Classes/Priest.h"
@@ -79,6 +83,17 @@ void factoryTest()
 	testhero = test_creator.produceHero("mage");
 	if (Mage* t = dynamic_cast<Mage*>(testhero)) {
 		printf("I'm a mage!\n");
+	}
+	else
+	{
+		printf("FATAL ERROR!!!!!!!\n");
+	}
+	delete testhero;
+	testhero = NULL;
+	//Paldin factory test
+	testhero = test_creator.produceHero("paladin");
+	if (Paladin* t = dynamic_cast<Paladin*>(testhero)) {
+		printf("I'm a paladin!\n");
 	}
 	else
 	{
