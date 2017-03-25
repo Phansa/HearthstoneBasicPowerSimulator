@@ -6,6 +6,8 @@ class Class
 		int cards_remaining();
 		int damage(int damage_taken);
 		int get_health();
+		//Called after each damaging action
+		bool isAlive();
 	protected:
 		int deck = 30;
 		int armor = 0;

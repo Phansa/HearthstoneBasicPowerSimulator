@@ -2,6 +2,7 @@
 #define CLASS
 #include "Class.h"
 #endif
+
 void Class::draw()
 {
 	if(deck > 0)
@@ -14,6 +15,7 @@ void Class::draw()
 		damage(fatigue);
 	}
 }
+
 int Class::cards_remaining()
 {
 	return deck;
@@ -42,7 +44,20 @@ int Class::damage(int damage_taken)
 	}
 	return health;
 }
+
 int Class::get_health()
 {
 	return health;
+}
+
+bool Class::isAlive()
+{
+	if(health <= 0)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
