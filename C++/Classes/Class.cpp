@@ -11,7 +11,6 @@ void Class::draw()
 	else
 	{
 		fatigue += 1;
-		//Calculates the correct health to subtract if armor is present
 		damage(fatigue);
 	}
 }
@@ -19,6 +18,8 @@ int Class::cards_remaining()
 {
 	return deck;
 }
+
+//Calculates the correct health to subtract if armor is present
 int Class::damage(int damage_taken)
 {
 	int remaining = 0;
