@@ -7,6 +7,7 @@
 #include "Hunter.h"
 #endif
 
+//Method left unimplemented since it only affects other heroes
 void Hunter::power()
 {
 
