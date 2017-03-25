@@ -4,6 +4,8 @@ class Class
 		virtual void power() = 0;
 		void draw();
 		int cards_remaining();
+		int damage(int damage_taken);
+		int get_health();
 	protected:
 		int deck = 30;
 		int armor = 0;
