@@ -17,6 +17,10 @@
 #define HUNTER
 #include "Classes/Hunter.h"
 #endif
+#ifndef MAGE
+#define MAGE
+#include "Classes/Mage.h"
+#endif
 #ifndef PRIEST
 #define PRIEST
 #include "Classes/Priest.h"
@@ -49,6 +53,7 @@ void factoryTest()
 {
 	ClassFactory test_creator;
 	Class* testhero;
+	//Druid factory test
 	testhero = test_creator.produceHero("druid");
 	if (Druid* t = dynamic_cast<Druid*>(testhero)) {
 		printf("I'm a druid!\n");
@@ -59,6 +64,7 @@ void factoryTest()
 	}
 	delete testhero;
 	testhero = NULL;
+	//Hunter factory test
 	testhero = test_creator.produceHero("hunter");
 	if (Hunter* t = dynamic_cast<Hunter*>(testhero)) {
 		printf("I'm a hunter!\n");
@@ -69,6 +75,18 @@ void factoryTest()
 	}
 	delete testhero;
 	testhero = NULL;
+	//Mage factory test
+	testhero = test_creator.produceHero("mage");
+	if (Mage* t = dynamic_cast<Mage*>(testhero)) {
+		printf("I'm a mage!\n");
+	}
+	else
+	{
+		printf("FATAL ERROR!!!!!!!\n");
+	}
+	delete testhero;
+	testhero = NULL;
+	//Priest factory test
 	testhero = test_creator.produceHero("priest");
 	if (Priest* t = dynamic_cast<Priest*>(testhero)) {
 		printf("I'm a priest!\n");
@@ -79,6 +97,7 @@ void factoryTest()
 	}
 	delete testhero;
 	testhero = NULL;
+	//Warlock factory test
 	testhero = test_creator.produceHero("warlock");
 	if (Warlock* t = dynamic_cast<Warlock*>(testhero)) {
 		printf("I'm a warlock!\n");
@@ -89,6 +108,7 @@ void factoryTest()
 	}
 	delete testhero;
 	testhero = NULL;
+	//Warrior factory test
 	testhero = test_creator.produceHero("warrior");
 	if (Warrior* t = dynamic_cast<Warrior*>(testhero)) {
 		printf("I'm a warrior!\n");
@@ -108,10 +128,10 @@ void damageTest()
 	{
 		a.draw();
 	}
-	printf("Warlock has %i Health left \n", a.get_health());
-	printf("%i\n", a.cards_remaining());
+	printf("Warlock has %i health left\n", a.get_health());
+	printf("Warlock has %i cards left\n", a.cards_remaining());
 	Hunter b;
-	printf("%i\n", b.damage(2));
+	printf("Hunter has %i health left\n", b.damage(2));
 }
 int main()
 {
