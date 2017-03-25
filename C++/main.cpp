@@ -46,6 +46,8 @@
 #include "Classes/Warrior.h"
 #endif
 
+bool game_over = false;
+
 //Checks if the string is valid and formats it to read for the factory
 bool namecheck(std::string &heroname)
 {
@@ -60,6 +62,91 @@ bool namecheck(std::string &heroname)
 	}
 	return true;
 }
+
+//Processes hero power
+void process_power(Class* & hero1, Class* & hero2, int player, int turn)
+{
+	if(player == 1)
+	{
+		printf("TURN %i: Player 1 uses their hero power ", turn);
+		hero1->power();
+		if (Hunter* t = dynamic_cast<Hunter*>(hero1)) {
+			hero2->damage(2);
+			printf("to deal 2 damage to the enemy hero.\n");
+			if(!hero2->isAlive())
+			{
+				printf("TURN %i: Player 1 wins!\n");
+				game_over = true;
+			}
+			return;
+		}
+		printf("\n");
+	}
+	else
+	{
+		printf("TURN %i: Player 2 uses their hero power ", turn);
+		hero1->power();
+		if (Hunter* t = dynamic_cast<Hunter*>(hero2)) {
+			hero1->damage(2);
+			printf("to deal 2 damage to the enemy hero.\n");
+			if(!hero1->isAlive())
+			{
+				printf("TURN %i: Player 2 wins!\n");
+				game_over = true;
+			}
+			return;
+		}
+		printf("\n");
+	}
+}
+
+//Starts the game simulation
+void simulator_processing(Class* & hero1, Class* & hero2)
+{
+	int turn = 1;
+	//Initial draw
+	for(int i = 0; i < 3; ++i)
+	{
+		hero1->draw();
+	}
+	for(int i = 0; i < 4; ++i)
+	{
+		hero2->draw();
+	}
+	while(!game_over)
+	{
+		//Player 2's turn
+		if(turn % 2 == 0)
+		{
+			hero2->draw();
+			if(!hero2->isAlive())
+			{
+				printf("Turn %i: Player 2 died to fatigue\n");
+				//game_over = true;
+				break;
+			}
+			process_power(hero1, hero2, 2, turn);
+		}
+		//Player 1's turn
+		else
+		{
+			//Player cannot use hero power on turn 1
+			hero1->draw();
+			if(turn != 1)
+			{
+				process_power(hero1, hero2, 1, turn);
+			}
+		}
+		if(game_over)
+		{
+			break;
+		}
+		printf("TURN %i: Player 1 has %i health remaining and %i cards left \n", turn, hero1->get_health(), hero1->cards_remaining());
+		printf("TURN %i: Player 2 has %i health remainig and %i cards left \n", turn, hero2->get_health(), hero2->cards_remaining());
+		++turn;
+	}
+}
+
 //Testing my factory for each class
 void factoryTest()
 {
@@ -174,6 +261,7 @@ void factoryTest()
 	delete testhero;
 	testhero = NULL;
 }
+
 //Damage test
 void damageTest()
 {
@@ -188,12 +276,15 @@ void damageTest()
 	Hunter b;
 	printf("Hunter has %i health left\n", b.damage(2));
 }
+
+//Starting the test suite
 void test()
 {
-	printf("Starting tests: \n")
+	printf("Starting tests~\n");
 	factoryTest();
 	damageTest();
 }
+
 int main()
 {
 	std::string player1;
@@ -201,6 +292,8 @@ int main()
 	Class* hero1 = NULL;
 	Class* hero2 = NULL;
 	ClassFactory Creator;
+	srand(time(NULL));
+	test();
 	while(true)
 	{
 		printf("Please enter the names of the two classes you would like to use or type Q to exit: \n");
@@ -233,9 +326,32 @@ int main()
 				}
 			}
 			printf("Your selected classes are %s and %s \n", player1.c_str(), player2.c_str());
-			printf("The simulator will now begin: \n");
 			hero1 = Creator.produceHero(player1);
 			hero2 = Creator.produceHero(player2);
+			printf("The simulator will now begin: \n");
+			int i = rand()%2;
+/*			if(i == 0)
+			{
+				printf("HEADS %i\n", i);
+			}
+			else
+			{
+				printf("TAILS %i\n", i);
+			}*/
+			if(i == 1)
+			{
+				Class* temp = hero1;
+				hero1 = hero2;
+				hero2 = temp;
+				printf("TURN 0: %s is going first\n", player2.c_str());
+			}
+			else
+			{
+				printf("TURN 0: %s is going first\n", player1.c_str());
+			}
+
+			simulator_processing(hero1, hero2);
+			printf("Simulator finished...shuting down.\n");
 			delete hero1;
 			delete hero2;
 			hero1 = NULL;
