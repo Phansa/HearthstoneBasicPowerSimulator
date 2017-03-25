@@ -26,6 +26,10 @@
 #define PRIEST
 #include "Priest.h"
 #endif
+#ifndef ROGUE
+#define ROGUE
+#include "Rogue.h"
+#endif
 #ifndef WARLOCK
 #define WARLOCK
 #include "Warlock.h"
@@ -57,6 +61,10 @@ Class* ClassFactory::produceHero(std::string hero_type)
 	else if(hero_type == "priest")
 	{
 		return new Priest;
+	}
+	else if(hero_type == "rogue")
+	{
+		return new Rogue;
 	}
 	if(hero_type == "warlock")
 	{

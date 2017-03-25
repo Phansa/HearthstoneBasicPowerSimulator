@@ -29,6 +29,10 @@
 #define PRIEST
 #include "Classes/Priest.h"
 #endif
+#ifndef ROGUE
+#define ROGUE
+#include "Classes/Rogue.h"
+#endif
 #ifndef WARLOCK
 #define WARLOCK
 #include "Classes/Warlock.h"
@@ -57,6 +61,7 @@ void factoryTest()
 {
 	ClassFactory test_creator;
 	Class* testhero;
+
 	//Druid factory test
 	testhero = test_creator.produceHero("druid");
 	if (Druid* t = dynamic_cast<Druid*>(testhero)) {
@@ -68,6 +73,7 @@ void factoryTest()
 	}
 	delete testhero;
 	testhero = NULL;
+
 	//Hunter factory test
 	testhero = test_creator.produceHero("hunter");
 	if (Hunter* t = dynamic_cast<Hunter*>(testhero)) {
@@ -79,6 +85,7 @@ void factoryTest()
 	}
 	delete testhero;
 	testhero = NULL;
+
 	//Mage factory test
 	testhero = test_creator.produceHero("mage");
 	if (Mage* t = dynamic_cast<Mage*>(testhero)) {
@@ -90,7 +97,8 @@ void factoryTest()
 	}
 	delete testhero;
 	testhero = NULL;
-	//Paldin factory test
+
+	//Paladin factory test
 	testhero = test_creator.produceHero("paladin");
 	if (Paladin* t = dynamic_cast<Paladin*>(testhero)) {
 		printf("I'm a paladin!\n");
@@ -101,6 +109,7 @@ void factoryTest()
 	}
 	delete testhero;
 	testhero = NULL;
+
 	//Priest factory test
 	testhero = test_creator.produceHero("priest");
 	if (Priest* t = dynamic_cast<Priest*>(testhero)) {
@@ -112,6 +121,19 @@ void factoryTest()
 	}
 	delete testhero;
 	testhero = NULL;
+
+	//Rogue factory test
+	testhero = test_creator.produceHero("rogue");
+	if (Rogue* t = dynamic_cast<Rogue*>(testhero)) {
+		printf("I'm a rogue!\n");
+	}
+	else
+	{
+		printf("FATAL ERROR!!!!!!!\n");
+	}
+	delete testhero;
+	testhero = NULL;
+
 	//Warlock factory test
 	testhero = test_creator.produceHero("warlock");
 	if (Warlock* t = dynamic_cast<Warlock*>(testhero)) {
