@@ -5,9 +5,17 @@
 #define CLASS
 #include "Classes/Class.h"
 #endif
+#ifndef PRIEST
+#define PRIEST
+#include "Classes/Priest.h"
+#endif
 #ifndef WARLOCK
 #define WARLOCK
 #include "Classes/Warlock.h"
+#endif
+#ifndef WARRIOR
+#define WARRIOR
+#include "Classes/Warrior.h"
 #endif
 
 int main()
