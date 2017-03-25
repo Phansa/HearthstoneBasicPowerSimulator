@@ -6,5 +6,4 @@
 class Warlock: public Class {
 	public:
 		void power();
-		Warlock();
 };

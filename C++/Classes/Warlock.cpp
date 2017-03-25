@@ -12,7 +12,3 @@ void Warlock::power()
 	health -= 2;
 	draw();
 }
-Warlock::Warlock()
-{
-	
-}
