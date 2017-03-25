@@ -1,0 +1,6 @@
+cmake_minimum_required (VERSION 3.1)
+project (HearthstoneSimulator)
+set (CMAKE_CXX_STANDARD 14)
+add_subdirectory("Classes")
+add_executable(HearthstoneSimulator main.cpp ${Sources})
+target_link_libraries(HearthstoneSimulator Classes)
