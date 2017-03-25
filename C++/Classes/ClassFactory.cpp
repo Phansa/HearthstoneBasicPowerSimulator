@@ -30,6 +30,10 @@
 #define ROGUE
 #include "Rogue.h"
 #endif
+#ifndef SHAMAN
+#define SHAMAN
+#include "Shaman.h"
+#endif
 #ifndef WARLOCK
 #define WARLOCK
 #include "Warlock.h"
@@ -66,11 +70,15 @@ Class* ClassFactory::produceHero(std::string hero_type)
 	{
 		return new Rogue;
 	}
-	if(hero_type == "warlock")
+	else if(hero_type == "shaman")
+	{
+		return new Shaman;
+	}
+	else if(hero_type == "warlock")
 	{
 		return new Warlock;
 	}
-	if(hero_type == "warrior")
+	else if(hero_type == "warrior")
 	{
 		return new Warrior;
 	}

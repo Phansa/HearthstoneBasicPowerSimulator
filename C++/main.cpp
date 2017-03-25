@@ -33,6 +33,10 @@
 #define ROGUE
 #include "Classes/Rogue.h"
 #endif
+#ifndef SHAMAN
+#define SHAMAN
+#include "Classes/Shaman.h"
+#endif
 #ifndef WARLOCK
 #define WARLOCK
 #include "Classes/Warlock.h"
@@ -61,6 +65,7 @@ void factoryTest()
 {
 	ClassFactory test_creator;
 	Class* testhero;
+	printf("Factory Test initializing:\n");
 
 	//Druid factory test
 	testhero = test_creator.produceHero("druid");
@@ -134,6 +139,18 @@ void factoryTest()
 	delete testhero;
 	testhero = NULL;
 
+	//Shaman factory test
+	testhero = test_creator.produceHero("shaman");
+	if (Shaman* t = dynamic_cast<Shaman*>(testhero)) {
+		printf("I'm a shaman!\n");
+	}
+	else
+	{
+		printf("FATAL ERROR!!!!!!!\n");
+	}
+	delete testhero;
+	testhero = NULL;
+
 	//Warlock factory test
 	testhero = test_creator.produceHero("warlock");
 	if (Warlock* t = dynamic_cast<Warlock*>(testhero)) {
@@ -160,6 +177,7 @@ void factoryTest()
 //Damage test
 void damageTest()
 {
+	printf("Damage Test initializing:\n");
 	Warlock a;
 	for(int i = 0; i < 32; ++i)
 	{
@@ -170,6 +188,12 @@ void damageTest()
 	Hunter b;
 	printf("Hunter has %i health left\n", b.damage(2));
 }
+void test()
+{
+	printf("Starting tests: \n")
+	factoryTest();
+	damageTest();
+}
 int main()
 {
 	std::string player1;
@@ -177,8 +201,6 @@ int main()
 	Class* hero1 = NULL;
 	Class* hero2 = NULL;
 	ClassFactory Creator;
-	factoryTest();
-	damageTest();
 	while(true)
 	{
 		printf("Please enter the names of the two classes you would like to use or type Q to exit: \n");
