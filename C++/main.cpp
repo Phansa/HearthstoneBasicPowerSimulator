@@ -5,6 +5,10 @@
 #define CLASS
 #include "Classes/Class.h"
 #endif
+#ifndef DRUID
+#define DRUID
+#include "Classes/Druid.h"
+#endif
 #ifndef HUNTER
 #define HUNTER
 #include "Classes/Hunter.h"
