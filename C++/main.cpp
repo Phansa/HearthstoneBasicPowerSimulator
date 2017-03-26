@@ -66,6 +66,7 @@ bool namecheck(std::string &heroname)
 //Processes hero power
 void process_power(Class* & hero1, Class* & hero2, int player, int turn)
 {
+	//Player 1's Power
 	if(player == 1)
 	{
 		printf("TURN %i: Player 1 uses their hero power ", turn);
@@ -75,28 +76,49 @@ void process_power(Class* & hero1, Class* & hero2, int player, int turn)
 			printf("to deal 2 damage to the enemy hero.\n");
 			if(!hero2->isAlive())
 			{
-				printf("TURN %i: Player 1 wins!\n");
+				printf("TURN %i: Player 1 wins!\n", turn);
 				game_over = true;
 			}
-			return;
 		}
-		printf("\n");
+		if(Warlock* t = dynamic_cast<Warlock*>(hero1))
+		{
+			printf("to draw a card.\n");
+			if(!hero1->isAlive())
+			{
+				printf("TURN %i: Player 1 died to fatigue\n", turn);
+				printf("TURN %i: Player 2 wins!\n", turn);
+				game_over = true;
+			}
+		}
+		return;
+		//printf("\n");
 	}
+	//Player 2's Power
 	else
 	{
 		printf("TURN %i: Player 2 uses their hero power ", turn);
-		hero1->power();
+		hero2->power();
 		if (Hunter* t = dynamic_cast<Hunter*>(hero2)) {
 			hero1->damage(2);
 			printf("to deal 2 damage to the enemy hero.\n");
 			if(!hero1->isAlive())
 			{
-				printf("TURN %i: Player 2 wins!\n");
+				printf("TURN %i: Player 2 wins!\n", turn);
 				game_over = true;
 			}
-			return;
 		}
-		printf("\n");
+		if(Warlock* t = dynamic_cast<Warlock*>(hero2))
+		{
+			printf("to draw a card.\n");
+			if(!hero2->isAlive())
+			{
+				printf("TURN %i: Player 2 died to fatigue.\n", turn);
+				printf("TURN %i: Player 1 wins!\n", turn);
+				game_over = true;
+			}
+		}
+		return;
+		//printf("\n");
 	}
 }
 
@@ -118,10 +140,21 @@ void simulator_processing(Class* & hero1, Class* & hero2)
 		//Player 2's turn
 		if(turn % 2 == 0)
 		{
-			hero2->draw();
+			printf("TURN %i: Player 2 starts their turn.\n", turn);
+			if(hero2->cards_remaining() > 0)
+			{
+				hero2->draw();
+				printf("TURN %i: Player 2 draws a card.\n", turn);
+			}
+			else
+			{
+				hero2->draw();
+				printf("TURN %i: Player 2 takes %i fatigue damage - %i health remaining.\n", turn, hero2->get_fatigue(), hero2->get_health());
+			}
 			if(!hero2->isAlive())
 			{
-				printf("Turn %i: Player 2 died to fatigue\n");
+				printf("TURN %i: Player 2 died to fatigue.\n", turn);
+				printf("TURN %i: Player 1 wins!\n", turn);
 				//game_over = true;
 				break;
 			}
@@ -131,18 +164,34 @@ void simulator_processing(Class* & hero1, Class* & hero2)
 		else
 		{
 			//Player cannot use hero power on turn 1
-			hero1->draw();
+			printf("TURN %i: Player 1 starts their turn.\n", turn);
+			if(hero1->cards_remaining() > 0)
+			{
+				hero1->draw();
+				printf("TURN %i: Player 1 draws a card.\n", turn);
+			}
+			else
+			{
+				hero1->draw();
+				printf("TURN %i: Player 1 takes %i fatigue damage - %i health remaining.\n", turn, hero1->get_fatigue(), hero1->get_health());
+			}
 			if(turn != 1)
 			{
 				process_power(hero1, hero2, 1, turn);
+			}
+			if(!hero1->isAlive())
+			{
+				printf("TURN %i: Player 1 died to fatigue.\n", turn);
+				printf("TURN %i: Player 2 wins!\n", turn);
+				break;
 			}
 		}
 		if(game_over)
 		{
 			break;
 		}
-		printf("TURN %i: Player 1 has %i health remaining and %i cards left \n", turn, hero1->get_health(), hero1->cards_remaining());
-		printf("TURN %i: Player 2 has %i health remainig and %i cards left \n", turn, hero2->get_health(), hero2->cards_remaining());
+		printf("TURN %i: Player 1 has %i health remaining and %i cards left in deck.\n", turn, hero1->get_health(), hero1->cards_remaining());
+		printf("TURN %i: Player 2 has %i health remainig and %i cards left in deck.\n", turn, hero2->get_health(), hero2->cards_remaining());
 		++turn;
 	}
 }
