@@ -61,3 +61,8 @@ bool Class::isAlive()
 		return true;
 	}
 }
+
+int Class::get_fatigue()
+{
+	return fatigue;
+}
