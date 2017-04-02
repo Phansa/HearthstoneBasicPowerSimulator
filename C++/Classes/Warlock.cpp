@@ -10,5 +10,6 @@
 void Warlock::power()
 {
 	health -= 2;
-	draw();
+	//Drawing is processed in the main turn processing now
+	//draw();
 }

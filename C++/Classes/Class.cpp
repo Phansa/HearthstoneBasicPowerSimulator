@@ -16,7 +16,7 @@ void Class::draw()
 	}
 }
 
-int Class::cards_remaining()
+const int Class::cards_remaining()
 {
 	return deck;
 }
@@ -45,7 +45,7 @@ int Class::damage(int damage_taken)
 	return health;
 }
 
-int Class::get_health()
+const int Class::get_health()
 {
 	return health;
 }
@@ -62,7 +62,7 @@ bool Class::isAlive()
 	}
 }
 
-int Class::get_fatigue()
+const int Class::get_fatigue()
 {
 	return fatigue;
 }

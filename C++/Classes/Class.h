@@ -3,12 +3,12 @@ class Class
 	public:
 		virtual void power() = 0;
 		void draw();
-		int cards_remaining();
+		const int cards_remaining();
 		int damage(int damage_taken);
-		int get_health();
+		const int get_health();
 		//Called after each damaging action
 		bool isAlive();
-		int get_fatigue();
+		const int get_fatigue();
 	protected:
 		int deck = 30;
 		int armor = 0;

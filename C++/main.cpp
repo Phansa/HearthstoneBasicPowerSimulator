@@ -63,8 +63,23 @@ bool namecheck(std::string &heroname)
 	return true;
 }
 
-//Processes hero power
-void process_power(Class* & hero1, Class* & hero2, int player, int turn)
+//Draw Function
+void processDraw(Class* &hero,int turn, int player)
+{
+	if(hero->cards_remaining() > 0)
+	{
+		hero->draw();
+		printf("TURN %i: Player %i draws a card: %i cards left in deck.\n", turn, player, hero->cards_remaining());
+	}
+	else
+	{
+		hero->draw();
+		printf("TURN %i: Player %i attempts to draw a card and takes %i fatigue damage: %i health remaining.\n", turn, player, hero->get_fatigue(), hero->get_health());
+	}
+}
+
+/*//Processes hero power
+void processPower(Class* & hero1, Class* & hero2, int player, int turn)
 {
 	//Player 1's Power
 	if(player == 1)
@@ -110,8 +125,10 @@ void process_power(Class* & hero1, Class* & hero2, int player, int turn)
 		if(Warlock* t = dynamic_cast<Warlock*>(hero2))
 		{
 			printf("to draw a card.\n");
+			hero2->processDraw();
 			if(!hero2->isAlive())
 			{
+				printf("TURN %i: Player 2 takes %i fatigue damage: %i health remaining.\n", turn, hero2->get_fatigue(), hero2->get_health());
 				printf("TURN %i: Player 2 died to fatigue.\n", turn);
 				printf("TURN %i: Player 1 wins!\n", turn);
 				game_over = true;
@@ -121,36 +138,64 @@ void process_power(Class* & hero1, Class* & hero2, int player, int turn)
 		//printf("\n");
 	}
 }
-
-//Starts the game simulation
-void simulator_processing(Class* & hero1, Class* & hero2)
+*/
+void victory(int turn, int player)
 {
-	int turn = 1;
+	if(player == 1)
+	{
+		printf("TURN %i: Player 1 wins!\n", turn);
+	}
+	else
+	{
+		printf("TURN %i: Player 2 wins!\n", turn);
+	}
+	game_over = true;
+}
+void processPower(Class* & hero1, Class* &hero2, int turn, int player)
+{
+	printf("TURN %i: Player %i uses their hero power ", turn, player);
+	hero1->power();
+	if (Hunter* t = dynamic_cast<Hunter*>(hero1)) {
+		hero2->damage(2);
+		printf("to deal 2 damage to the enemy hero.\n");
+		if(!hero2->isAlive())
+		{
+			victory(turn, player);
+		}
+	}
+	if(Warlock* t = dynamic_cast<Warlock*>(hero1))
+	{
+		printf("to draw a card.\n");
+		processDraw(hero1, turn, player);
+		if(!hero1->isAlive())
+		{
+			printf("TURN %i: Player %i died to fatigue\n", turn, player);
+			victory(turn, player);
+		}
+	}
+	return;
+}
+//Starts the game simulation
+void simulatorProcessing(Class* & hero1, Class* & hero2)
+{
+	int turn = 0;
 	//Initial draw
 	for(int i = 0; i < 3; ++i)
 	{
-		hero1->draw();
+		processDraw(hero1, turn, 1);
 	}
 	for(int i = 0; i < 4; ++i)
 	{
-		hero2->draw();
+		processDraw(hero2, turn, 2);
 	}
+	++turn;
 	while(!game_over)
 	{
 		//Player 2's turn
 		if(turn % 2 == 0)
 		{
 			printf("TURN %i: Player 2 starts their turn.\n", turn);
-			if(hero2->cards_remaining() > 0)
-			{
-				hero2->draw();
-				printf("TURN %i: Player 2 draws a card.\n", turn);
-			}
-			else
-			{
-				hero2->draw();
-				printf("TURN %i: Player 2 takes %i fatigue damage - %i health remaining.\n", turn, hero2->get_fatigue(), hero2->get_health());
-			}
+			processDraw(hero2, turn, 2);
 			if(!hero2->isAlive())
 			{
 				printf("TURN %i: Player 2 died to fatigue.\n", turn);
@@ -158,26 +203,17 @@ void simulator_processing(Class* & hero1, Class* & hero2)
 				//game_over = true;
 				break;
 			}
-			process_power(hero1, hero2, 2, turn);
+			processPower(hero2, hero1, turn, 2);
 		}
 		//Player 1's turn
 		else
 		{
 			//Player cannot use hero power on turn 1
 			printf("TURN %i: Player 1 starts their turn.\n", turn);
-			if(hero1->cards_remaining() > 0)
-			{
-				hero1->draw();
-				printf("TURN %i: Player 1 draws a card.\n", turn);
-			}
-			else
-			{
-				hero1->draw();
-				printf("TURN %i: Player 1 takes %i fatigue damage - %i health remaining.\n", turn, hero1->get_fatigue(), hero1->get_health());
-			}
+			processDraw(hero1, turn, 1);
 			if(turn != 1)
 			{
-				process_power(hero1, hero2, 1, turn);
+				processPower(hero1, hero2, turn, 1);
 			}
 			if(!hero1->isAlive())
 			{
@@ -399,7 +435,7 @@ int main()
 				printf("TURN 0: %s is going first\n", player1.c_str());
 			}
 
-			simulator_processing(hero1, hero2);
+			simulatorProcessing(hero1, hero2);
 			printf("Simulator finished...shuting down.\n");
 			delete hero1;
 			delete hero2;
